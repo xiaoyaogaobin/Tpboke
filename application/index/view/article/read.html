@@ -1,0 +1,329 @@
+{extend name='/father/index' /}
+{block name='title'}
+<title> Mro Gao 博客-{$article->title}</title>
+{/block}
+{block name='nave'}
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="{asset}/editor/lib/marked.min.js"></script>
+<script src="{asset}/editor/lib/prettify.min.js"></script>
+<script src="{asset}/editor/lib/raphael.min.js"></script>
+<script src="{asset}/editor/lib/underscore.min.js"></script>
+<script src="{asset}/editor/lib/sequence-diagram.min.js"></script>
+<script src="{asset}/editor/lib/flowchart.min.js"></script>
+<script src="{asset}/editor/lib/jquery.flowchart.min.js"></script>
+<script src="{asset}/editor/editormd.js"></script>
+<nav role="navigation" class="navbar navbar-default">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12" >
+
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+
+                        <span class="sr-only">切换导航</span>
+
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+
+                <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                    <ul class="_menu" >
+                        <li>
+                            <a href="{:url('index')}">首页</a></li>
+                        {foreach $categorys as $v}
+                        <li
+
+                                {eq name="$v['id']" value="$Request.param.cate_id"}
+                                class="_active"
+                                {/eq}
+                        ><a href="{:url('/index/category',['cate_id'=>$v['id']])}">{$v['name']}</a></li>
+                        {/foreach}
+                        <!--判断是否登录-->
+                        {if session('uid')}
+                        <!--取出session 数据的时候需要加：-->
+
+                        <li >
+                            <div class="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {$Think.session.usename}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/article/create">发布文章</a>
+                                    <a class="dropdown-item" href="/logout">退出登录</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </li>
+                        {else/}
+                        <li ><a href="/login">登录</a></li>
+                        <li ><a href="/register">注册</a></li>
+                        {/if}
+
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</nav>
+{/block}
+{block name='left'}
+<main class="col-md-8">
+
+    <article>
+        <div class="_head">
+            <h1>{$article->title}</h1>
+            <span>
+								作者：
+								<a href="">{$article->user->usename}</a>
+								</span>
+            •
+            <!--pubdate表⽰示发布⽇日期-->
+            <time pubdate="pubdate" >{$article->create_at}</time>
+        </div>
+        <div class="_digest">
+            <!--css /js文件引入-->
+
+
+
+
+            <!--输入需要转换的markdown文件开始-->
+
+            <textarea id="demo1" style="display: none">
+  {$article->content}
+        </textarea>
+
+
+
+            <!--在该div中展示,如有初始化的数据可以放在textarea中-->
+            <div id="testEditorMdview">
+                <textarea id="appendTest" style="display:none;"></textarea>
+            </div>
+
+
+            <!--js开始-->
+            <script>
+                $(function () {
+
+                    //先对容器初始化，在需要展示的容器中创建textarea隐藏标签，
+                    $("#testEditorMdview").html('<textarea id="appendTest" style="display:none;"></textarea>');
+                    var content=$("#demo1").val();//获取需要转换的内容
+                    $("#appendTest").val(content);//将需要转换的内容加到转换后展示容器的textarea隐藏标签中
+
+                    //转换开始,第一个参数是上面的div的id
+                    editormd.markdownToHTML("testEditorMdview", {
+                        htmlDecode: "style,script,iframe", //可以过滤标签解码
+                        emoji: true,
+                        taskList:true,
+                        tex: true,               // 默认不解析
+                        flowChart:true,         // 默认不解析
+                        sequenceDiagram:true,  // 默认不解析
+                    });
+
+                })
+
+            </script>
+
+        </div>
+        <div class="text-center">
+
+            <button class="btn bg-success" type="button" id="sc"
+
+                    user_id="{$article->user->id}" article_id="{$article.id}" session_id="{$Think.session.uid}"
+            >
+                {if $Think.session.code == 1}
+                <span style="color: white!important;">取消收藏 </span></button>
+
+            {else/}
+            <span style="color: white!important;">收藏 </span></button>
+            {/if}
+            <button class="btn bg-danger" type="button" id="dz" user_id="{$article->user->id}" article_id="{$article.id}" session_id="{$Think.session.uid}">
+                {if $Think.session.zan == 1}
+                <span style="color: white!important;">取消点赞</span>
+
+
+            {else/}
+                <span style="color: white!important;">点赞 </span></button>
+            {/if}
+
+            </button>
+        </div>
+    </article>
+
+</main>
+{/block}
+{block name='right'}
+<aside class="col-md-4 hidden-sm hidden-xs">
+    <div class="_widget">
+        <h4>搜索一下</h4>
+        <div class="_info">
+            <nav class="navbar navbar-light ">
+                <!--action 是提交到那个方法里面，提交方式用Get-->
+                <form class="form-inline" action="/search" method="get">
+                    <!--起一个关键字name，方法里面接受-->
+                    <input class="form-control mr-sm-2" name="keywords" type="search" placeholder="请输入你的文章标题" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                </form>
+            </nav>
+
+        </div>
+    </div>
+    <div class="_widget">
+        <h4>分类列表</h4>
+        <div>
+            <a href="">娱乐</a>
+        </div>
+    </div>
+    <div class="_widget">
+        <h4>标签云</h4>
+        <div class="_tag">
+            <a href="">PHP</a>
+            <a href="">PHP</a>
+            <a href="">PHP</a>
+        </div>
+    </div>
+
+</aside>
+
+<script>
+    $(function () {
+        //收藏功能
+        $('#sc').click(function () {
+            //获取文章id
+            let user_id = $(this).attr('user_id')
+            //获取文章id
+            let article_id = $(this).attr('article_id')
+            //获取session id
+            let session_id = $(this).attr('session_id')
+
+
+
+            if (user_id && article_id){
+
+                $.ajax({
+                    type: 'get',
+                    url: "{:url('/collection')}",
+                    data:{
+                        'user_id':user_id,
+                        'article_id':article_id,
+                        'session_id':session_id,
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        switch (data.status) {
+                            case  1:
+                                swal({
+                                    text: data.message,
+                                    icon: "success",
+                                    button: false
+                                });
+                                $('#sc').attr('class','btn bg-danger')
+                                $('#sc').html(' <span style="color: white!important;">收藏成功 </span>')
+
+                                break
+                            case 0 :
+                                swal({
+                                    text: data.message,
+                                    icon: "warning",
+                                    button: false,
+                                });
+                                break
+                            case  -1:
+                                swal({
+                                    text: data.message,
+                                    icon: "warning",
+                                    button: false,
+                                });
+                                $('#sc').attr('class','btn bg-success')
+
+                                $('#sc').html('<span style="color: white!important;">收藏</span>')
+
+                                break
+
+
+                        }
+
+
+                    }
+                })
+            }
+
+
+        })
+        //点赞功能
+        $('#dz').click(function () {
+            //获取文章id
+            let user_id = $(this).attr('user_id')
+            //获取文章id
+            let article_id = $(this).attr('article_id')
+            //获取session id
+            let session_id = $(this).attr('session_id')
+
+
+
+            if (user_id && article_id){
+
+                $.ajax({
+                    type: 'get',
+                    url: "{:url('/zan')}",
+                    data:{
+                        'user_id':user_id,
+                        'article_id':article_id,
+                        'session_id':session_id,
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        switch (data.status) {
+                            case  1:
+                                swal({
+                                    text: data.message,
+                                    icon: "success",
+                                    button: false
+                                });
+                                $('#dz').attr('class','btn bg-danger')
+                                $('#dz').html(' <span style="color: white!important;">点赞成功 </span>')
+
+                                break
+                            case 0 :
+                                swal({
+                                    text: data.message,
+                                    icon: "warning",
+                                    button: false,
+                                });
+                                break
+                            case  -1:
+                                swal({
+                                    text: data.message,
+                                    icon: "warning",
+                                    button: false,
+                                });
+                                $('#dz').attr('class','btn bg-success')
+
+                                $('#dz').html('<span style="color: white!important;">点赞</span>')
+
+                                break
+
+
+                        }
+
+
+                    }
+                })
+            }
+
+
+        })
+
+    })
+
+
+
+</script>
+
+
+{/block}

@@ -1,0 +1,162 @@
+{extend name='/father/index' /}
+{block name='nave'}
+<nav role="navigation" class="navbar navbar-default">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12" >
+
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+
+                        <span class="sr-only">切换导航</span>
+
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+
+                <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                    <ul class="_menu" >
+                        <li
+
+                                {empty name="$Request.param.cate_id"}
+                                class="_active"
+                                {/empty}
+
+                            <a href="index.html">首页</a></li>
+                        {foreach $categorys as $v}
+                        <li
+
+                                {eq name="$v['id']" value="$Request.param.cate_id"}
+                                class="_active"
+                                {/eq}
+                        ><a href="{:url('/index/category',['cate_id'=>$v['id']])}">{$v['name']}</a></li>
+                        {/foreach}
+                        <!--判断是否登录-->
+                        {if session('uid')}
+                        <!--取出session 数据的时候需要加：-->
+
+                        <li >
+                            <div class="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  {$Think.session.usename}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/article/create">发布文章</a>
+                                    <a class="dropdown-item" href="/logout">退出登录</a>
+                                    <a class="dropdown-item" href="/admin">管理中心</a>
+                                </div>
+                            </div>
+                        </li>
+                        {else/}
+                        <li ><a href="/login">登录</a></li>
+                        <li ><a href="/register">注册</a></li>
+                        {/if}
+
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</nav>
+{/block}
+{block name='left'}
+<main class="col-md-8">
+    <article class="_carousel">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class=""></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1" class="active"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item">
+                    <img src="/static/org/images/1.jpg">
+                </div>
+                <div class="item active">
+                    <img src="/static/org/images/2.jpg">
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </a>
+        </div>
+    </article>
+    {foreach $articles as $v}
+    <article>
+
+        <div class="_head">
+            <h1>{$v->title}</h1>
+            <span>
+								作者：{$v->user->usename}
+								</span>
+            •
+            <!--pubdate表⽰示发布⽇日期-->
+            <time pubdate="pubdate" datetime="2017-1-1">{$v->create_at}</time>
+
+        </div>
+        <div class="_digest">
+            <img src="/uploads/{$v.title_img}" class="img-responsive">
+            <p>
+                {$v.destrin}
+            </p>
+        </div>
+        <div class="_more">
+            <a href='{:url("/article/$v->id")}' class="btn btn-default">阅读全文</a>
+        </div>
+        <div class="_footer">
+            <i class="glyphicon glyphicon-tags"></i>
+            <a href="javascript:;">阅读量:{$v->pv}次</a>、
+
+        </div>
+
+    </article>
+    {/foreach}
+    {$articles|raw}
+</main>
+{/block}
+{block name='right'}
+<aside class="col-md-4 hidden-sm hidden-xs">
+    <div class="_widget">
+        <h4>搜索一下</h4>
+        <div class="_info">
+            <nav class="navbar navbar-light ">
+                <!--action 是提交到那个方法里面，提交方式用Get-->
+                <form class="form-inline" action="/search" method="get">
+                    <!--起一个关键字name，方法里面接受-->
+                    <input class="form-control mr-sm-2" name="keywords" type="search" placeholder="请输入你的文章标题" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                </form>
+            </nav>
+
+        </div>
+    </div>
+    <div class="_widget">
+        <h4>分类列表</h4>
+        <div>
+            <a href="">娱乐</a>
+        </div>
+    </div>
+    <div class="_widget">
+        <h4>标签云</h4>
+        <div class="_tag">
+            <a href="">PHP</a>
+            <a href="">PHP</a>
+            <a href="">PHP</a>
+        </div>
+    </div>
+
+</aside>
+{/block}

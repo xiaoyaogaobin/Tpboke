@@ -1,0 +1,169 @@
+{extend name='/father/father' /}
+
+{block name='right'}
+<div class="col-xs-12 col-sm-9 col-lg-10">
+    <div style="height:900px;width: 1200px">
+        <main class="col-md-1"></main>
+
+        <main class="col-md-10  justify-content-center">
+            <form method="post" id="register" class="form-horizontal" style="padding-bottom: 0px" >
+                <div class="card" style="padding-bottom: 100px">
+                    <div class="card-header">
+                        文章添加
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group mt-4 ">
+                            <label class="col-sm-3 control-label">文章标题</label>
+                            <div class="col-sm-7">
+                                <input type="hidden" name="id" value="{$article->id}">
+                                <input type="text"  value="{$article->title}" name="title" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group mt-4 ">
+                            <label class="col-sm-3 control-label">文章描述</label>
+                            <div class="col-sm-7">
+                                <input type="text"  name="destrin"value="{$article->destrin}" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-block">
+                        <div class="form-group mt-4 ">
+                            <label class="col-sm-3 control-label">文章栏目</label>
+                            <div class="col-sm-7">
+                                <div class="input-group ">
+
+                                    <select class="custom-select" id="inputGroupSelect01" name="cate_id">
+                                        <option selected=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">选择...</font></font></option>
+                                        {foreach $categorys as $v}
+                                        <option value="{$v['id']}"
+                                                {eq name="$article->cate_id" value="$v['id']"}
+                                                selected
+                                                {/eq}
+
+
+                                        ><font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">{$v['name']}</font></font></option>
+                                        {/foreach}
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text"  hidden name="{$Think.session.uid}">
+                    <div class="card-block">
+                        <div class="form-group mt-4 ">
+                            <label class="col-sm-3 control-label">文章图片</label>
+                            <div class="col-sm-7">
+                                <div class="input-group ">
+                                    <img src="/uploads/{$article->title_img}" alt="" width="100">
+                                    <div class="custom-file">
+                                        <input type="file" name="title_img" id="title_img"  value="/uploads/{$article->title_img}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group mt-4  ">
+                            <label class="col-sm-3 control-label">文章内容</label>
+                            <div class="col-sm-7">
+
+                                <div id="content">
+                                    <textarea style="display:none;" name="content">{{$article->content}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="user_id" value="{$Think.session.uid}">
+                    <div class="text-center ">
+                        <button type="button" class="btn btn-success" id="reg">发布文章</button>
+                        <button type="button" class="btn btn-danger " id="ret">重新输入</button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </main>
+        <main class="col-md-3"></main>
+    </div>
+    <div style="padding-bottom: 10px"></div>
+</div>
+<script>
+
+
+    $(function () {
+
+
+        $('#reg').click(function () {
+
+            let data = new FormData($("#register")[0]);
+            $.ajax({
+                type: 'post',
+                url: "{:url('/admin/articles/update')}",
+                data:data,
+                contentType: false, //不设置内容类型
+                processData: false, //不处理数据
+                dataType: 'json',
+                success: function(data){
+                    if (data.status ==1) {
+                        swal({
+                            text: data.message,
+                            icon: "success",
+                            button: false
+                        });
+                        function success() {
+                            window.location.href= "{:url('/admin/article')}"
+                        }
+                        setTimeout(success,2000)
+                    }else{
+                        swal({
+                            text: data.message,
+                            icon: "warning",
+                            button: false,
+                        });
+                    }
+
+                }
+            })
+        })
+        //表单清空
+        $('#ret').click(function () {
+            $('#register')[0].reset();
+        })
+
+
+
+
+
+
+
+    })
+    $(function() {
+        md_edit = editormd("content", { //注意1：这里的就是上面的DIV的id属性值
+            placeholder : '  欢迎使用'+'Mra Gao ' +" 编辑器" ,
+            width : "100%",
+            height : 400,
+            syncScrolling : "single",
+            emoji : true,
+            path : "{asset}/editor/lib/", //注意2：你的路径
+            saveHTMLToTextarea : true,
+            tocm : true, // Using [TOCM]
+            tex : true, // 开启科学公式TeX语言支持，默认关闭
+            flowChart : true, // 开启流程图支持，默认关闭
+            /* 上传图片配置 */
+            imageUpload : true,
+            imageFormats : [ "jpg", "jpeg", "gif", "png", "bmp", "webp" ],
+            imageUploadURL : "{:url('/uploadPicture')}", //注意你后端的上传图片服务地址
+        });
+    });
+
+</script>
+
+
+{/block}
+

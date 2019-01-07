@@ -1,0 +1,82 @@
+{extend name='/father/father'/}
+
+{block name='right'}
+<div class="col-xs-12 col-sm-9 col-lg-10">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">用户名</th>
+            <th scope="col">注册时间</th>
+            <th scope="col">会员</th>
+            <th scope="col">状态</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="users" id="v"}
+
+        <tr>
+            <th scope="row">{$v.id}</th>
+            <td>{$v.usename}</td>
+            <td>{$v.create_at}</td>
+            {eq name='$v.is_admin' value="1"}
+            <td>超级管理员</td>
+            {else}
+            <td>普通会员</td>
+            {/eq}
+            <!--eq 第一个参数跟第二个参数一样就会显示-->
+            {eq name='$v.status' value='1'}
+            <td>显示</td>
+            {/eq}
+            {eq name='$v.status' value='0'}
+            <td>隐藏</td>
+            {/eq}
+            <td width="200">
+                {eq name ='$v.id' value = '$Think.session.admin_uid'}
+                <a  href="{:url('/admin/user/userupdate',['id'=>$v.id])}" class="btn btn-success">编辑 </a>
+                {/eq}
+                <!--第一个参数跟第二个参数一样，反向就显示-->
+                {neq name ='$v.id' value = '$Think.session.admin_uid'}
+                <button class="btn btn-danger" onclick="del({$v.id})">删除 </button>
+                {/neq}
+            </td>
+        </tr>
+        {/volist}
+
+        </tbody>
+    </table>
+
+
+</div>
+<script>
+
+    function del(id) {
+        swal({
+            title: "确定删除吗？",
+            text: "你将无法回复该用户,点击空白区,取消选框",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定删除！",
+            cancelButtonText: "取消删除！",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then(
+            function(isConfirm){
+                if (isConfirm) {
+                    //或者id ,传递给后台
+                        window.location.href = "/admin/user/delete/id/"+id
+                } else {
+                    swal("取消！", "你的用户删除结束)",
+                        "error");
+                }
+            });
+
+    }
+
+</script>
+
+
+{/block}
+

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    {block name='title'}
+    <title>Mro Gao博客-首页</title>
+    {/block}
+
+    <!--描述和摘要-->
+    <meta name="Description" content=""/>
+    <meta name="Keywords" content=""/>
+    <!--载入公共模板-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="{asset}/org/org/bootstrap-3.3.5-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="{asset}/editor/css/editormd.css" />
+
+    <script src="{asset}/org/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="{asset}/editor/js/editormd.js"></script>
+    <link rel="stylesheet" type="text/css" href="{asset}/org/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="{asset}/org/css/backTop.css"/>
+
+    <style>
+        /*.editormd-preview-theme-dark {
+            color: #777;
+            background:#2C2827;
+        }
+
+        .editormd-preview-theme-dark .editormd-toc-menu > .markdown-toc {
+            background:#fff;
+            border:none;
+        }
+
+        .editormd-preview-theme-dark .editormd-toc-menu > .markdown-toc h1{
+            border-color:#ddd;
+        }
+
+        .editormd-preview-theme-dark .markdown-body h1,
+        .editormd-preview-theme-dark .markdown-body h2,
+        .editormd-preview-theme-dark .markdown-body hr {
+            border-color: #222;
+        }
+
+        .editormd-preview-theme-dark .editormd-preview-container  blockquote {
+            color: #555;
+            border-color: #333;
+            background: #222;
+            padding: 0.5em;
+        }
+
+        .editormd-preview-theme-dark .editormd-preview-container abbr {
+            background:#ff9900;
+            color: #fff;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+
+        .editormd-preview-theme-dark .editormd-preview-container code {
+            background: #5A9600;
+            color: #fff;
+            border: none;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+
+        .editormd-preview-theme-dark .editormd-preview-container table {
+            border: none;
+        }
+
+        .editormd-preview-theme-dark .editormd-preview-container .fa-emoji {
+            color: #B4BF42;
+        }
+
+        .editormd-preview-theme-dark .editormd-preview-container .katex {
+            color: #FEC93F;
+        }
+
+        .editormd-preview-theme-dark [class*=editormd-logo] {
+            color: #2196F3;
+        }
+
+        .editormd-preview-theme-dark .sequence-diagram text {
+            fill: #fff;
+        }
+
+        .editormd-preview-theme-dark .sequence-diagram rect,
+        .editormd-preview-theme-dark .sequence-diagram path {
+            color:#fff;
+            fill : #64D1CB;
+            stroke : #64D1CB;
+        }
+
+        .editormd-preview-theme-dark .flowchart rect,
+        .editormd-preview-theme-dark .flowchart path {
+            stroke : #A6C6FF;
+        }
+
+        .editormd-preview-theme-dark .flowchart rect {
+            fill: #A6C6FF;
+        }
+
+        .editormd-preview-theme-dark .flowchart text {
+            fill: #5879B4;
+        }*/
+    </style>
+
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>欢迎来到Mrs Gao系统</h1>
+            </div>
+        </div>
+    </div>
+</header>
+{block name='nave'}
+
+{/block}
+
+<section>
+    <div class="container">
+        <div class="row">
+            <!--标签规定文档的主要内容main-->
+            {block name='left'}
+            {/block}
+            {block name='right'}
+            {/block}
+
+        </div>
+    </div>
+</section>
+<footer class="hidden-xs">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <h4 class="_title">最新文章</h4>
+                <div id="" class="_single">
+                    <p><a href="">标题</a></p>
+                    <time>2010年11月06日11:24:16</time>
+                </div>
+                <div id="" class="_single">
+                    <p><a href="">标题</a></p>
+                    <time>2010年11月06日11:24:16</time>
+                </div>
+            </div>
+            <div class="col-sm-4 footer_tag">
+                <div id="">
+                    <h4 class="_title">标签云</h4>
+                    <a href="">PHP</a>
+                    <a href="">PHP</a>
+                    <a href="">PHP</a>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <h4 class="_title">友情链接</h4>
+                <div id="" class="_single">
+                    <p><a href="" target="_blank">百度</a></p>
+                    <p><a href="" target="_blank">百度</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="footer_bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="">网站名称</a>
+                |
+                <a href="">版权信息</a>
+                |
+                <a href="">admin@163.com</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--返回顶部自己写的插件-->
+<script src="{asset}/org/js/backTop.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function(){
+        //插件使用
+        $('.back_top').backTop({right:30});
+    })
+</script>
+<div class="back_top hidden-xs hidden-md">
+    <i class="glyphicon glyphicon-menu-up"></i>
+</div>
+</body>
+</html>

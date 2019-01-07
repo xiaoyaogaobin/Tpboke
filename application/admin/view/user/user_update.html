@@ -1,0 +1,64 @@
+{extend name='/father/father' /}
+
+{block name='right'}
+<div class="col-xs-12 col-sm-9 col-lg-10">
+    <div style="height:330px;width: 1200px">
+        <main class="col-md-3"></main>
+
+        <main class="col-md-6   justify-content-center">
+            <form method="post" id="register" action="/admin/user/userSave" class="form-horizontal" style="padding-bottom: 50px">
+                <div class="card" style="padding-bottom: 20px">
+                    <div class="card-header">
+                        编辑用户
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group mt-4 ">
+                            <label class="col-sm-3 control-label">账号</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="usename"  value="{$user->usename}" class="form-control" required="">
+                                <input type="hidden" name="id"  value="{$user->id}" class="form-control" required="">
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="form-group mt-4 ">
+                                <label class="col-sm-3 control-label">管理员</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="is_admin" value="{$user->is_admin}" class="form-control" required="">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-block">
+                            <div class="form-group mt-4 ">
+                                <label class="col-sm-3 control-label">是否隐藏</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="status" value="{$user->status}" class="form-control" required="">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-block">
+                            <div class="form-group mt-4 ">
+                                <label class="col-sm-3 control-label">密码</label>
+                                <div class="col-sm-7">
+                                    <input type="password" name="password"  value="{$user->password}" class="form-control" required="">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="text-center ">
+                            <button type="submit" class="btn btn-success" id="reg">保存用户</button>
+
+                        </div>
+                    </div></div></form></main>
+        <main class="col-md-3"></main>
+    </div>
+
+
+</div>
+
+
+
+{/block}
+

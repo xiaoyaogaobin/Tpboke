@@ -1,0 +1,80 @@
+{extend name='/father/father' /}
+
+{block name='right'}
+<div class="col-xs-12 col-sm-9 col-lg-10">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">栏目名称</th>
+            <th scope="col">是否热门</th>
+            <th scope="col">状态</th>
+            <th scope="col">创建时间</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="categorys" id="v"}
+
+        <tr>
+            <th scope="row">{$v.id}</th>
+            <td>{$v.name}</td>
+            <td>{$v.sort}</td>
+
+
+            <!--eq 第一个参数跟第二个参数一样就会显示-->
+            {eq name='$v.status' value='1'}
+            <td>显示</td>
+            {/eq}
+            {eq name='$v.status' value='0'}
+            <td>隐藏</td>
+            {/eq}
+            <td>{$v.create_at}</td>
+            <td width="200">
+
+                <a  href="{:url('/admin/categorys/update',['id'=>$v.id])}" class="btn btn-success btn-sm">编辑 </a>
+
+                <!--第一个参数跟第二个参数一样，反向就显示-->
+
+                <button class="btn btn-danger btn-sm" onclick="del({$v.id})">删除 </button>
+
+            </td>
+        </tr>
+        {/volist}
+
+        </tbody>
+    </table>
+
+
+</div>
+<script>
+
+    function del(id) {
+        swal({
+            title: "确定删除吗？",
+            text: "你将无法回复该用户,点击空白区,取消选框",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定删除！",
+            cancelButtonText: "取消删除！",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then(
+            function(isConfirm){
+                if (isConfirm) {
+                    //或者id ,传递给后台
+                    window.location.href = "/admin/categorys/delete/id/"+id
+                } else {
+                    swal("取消！", "你的用户删除结束)",
+                        "error");
+                }
+            });
+
+    }
+
+</script>
+
+
+{/block}
+

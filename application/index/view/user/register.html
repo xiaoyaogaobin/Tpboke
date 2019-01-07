@@ -1,0 +1,139 @@
+{extend name='/father/index' /}
+{block name='nave'}
+<nav role="navigation" class="navbar navbar-default">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12" >
+
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+
+                        <span class="sr-only">切换导航</span>
+
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+
+                <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                    <ul class="_menu" >
+                        <li ><a href="index.html">首页</a></li>
+                        {foreach $categorys as $v}
+                        <li><a href="">{$v['name']}</a></li>
+                        {/foreach}
+
+                        <li><a href="/login">登录</a></li>
+                        <li class="_active"><a href="/register">注册</a></li>
+
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</nav>
+{/block}
+{block name='left'}
+<div style="height:330px;width: 1200px">
+<main class="col-md-3"></main>
+
+<main class="col-md-6   justify-content-center">
+    <form method="post" id="register" class="form-horizontal" style="padding-bottom: 50px">
+    <div class="card" style="padding-bottom: 20px">
+    <div class="card-header">
+        账号注册
+    </div>
+    <div class="card-block">
+        <div class="form-group mt-4 ">
+            <label class="col-sm-3 control-label">账号</label>
+            <div class="col-sm-7">
+                <input type="text"  name="usename" class="form-control">
+            </div>
+        </div>
+        <div class="card-block">
+            <div class="form-group mt-4 ">
+                <label class="col-sm-3 control-label">密码</label>
+                <div class="col-sm-7">
+                    <input type="password"  name="password" class="form-control">
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="form-group mt-4  ">
+                    <label class="col-sm-3 control-label">确认密码</label>
+                    <div class="col-sm-7">
+                        <input type="password"  name="password_confirm" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="form-group mt-4  ">
+                    <label class="col-sm-3 control-label">验证码</label>
+                    <div class="col-sm-7">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="code" placeholder="请输入验证码" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">
+                                    <img   onclick="this.src='index/user/code?'+Math.random()"
+                                           alt="点击更换" title="点击更换" src="index/user/code" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
+    </form>
+    <div class="text-center ">
+    <button type="button" class="btn btn-success" id="reg">注册账号</button>
+    <button type="button" class="btn btn-danger " id="ret">重新输入</button>
+    </div>
+</main>
+<main class="col-md-3"></main>
+</div>
+<div style="padding-bottom: 10px"></div>
+<script>
+    $('#reg').click(function () {
+
+        $.ajax({
+            type: 'post',
+            url: "{:url('register_form')}",
+            data: $('#register').serialize(),
+            dataType: 'json',
+            success: function(data){
+                if (data.status ==1) {
+                  $relus=   swal({
+                        text: data.message,
+                        icon: "success",
+                        button: false
+                    });
+                  function rels() {
+                      if ($relus){
+                          window.location.href = "{:url('index/index')}";
+                      }
+                  }
+                  setTimeout(rels,2000)
+
+                }else{
+                    swal({
+                        text: data.message,
+                        icon: "warning",
+                        button: false
+                    });
+                }
+
+            }
+        })
+    })
+    //表单清空
+    $('#ret').click(function () {
+        $('#register')[0].reset();
+    })
+
+</script>
+{/block}

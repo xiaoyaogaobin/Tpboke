@@ -1,0 +1,221 @@
+{extend name='/father/index' /}
+{block name='title'}
+<title> Mro Gao 博客-发布文章</title>
+{/block}
+{block name='nave'}
+<nav role="navigation" class="navbar navbar-default">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12" >
+
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+
+                        <span class="sr-only">切换导航</span>
+
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+
+                <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                    <ul class="_menu" >
+                        <li>
+                        <a href="/index.html">首页</a></li>
+                        {foreach $categorys as $v}
+                        <li
+
+                                {eq name="$v['id']" value="$Request.param.cate_id"}
+                                class="_active"
+                                {/eq}
+                        ><a href="{:url('/index/category',['cate_id'=>$v['id']])}">{$v['name']}</a></li>
+                        {/foreach}
+                        <!--判断是否登录-->
+                        {if session('uid')}
+                        <!--取出session 数据的时候需要加：-->
+
+                        <li >
+                            <div class="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {$Think.session.usename}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/article/create">发布文章</a>
+                                    <a class="dropdown-item" href="/logout">退出登录</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </li>
+                        {else/}
+                        <li ><a href="/login">登录</a></li>
+                        <li ><a href="/register">注册</a></li>
+                        {/if}
+
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</nav>
+{/block}
+{block name='left'}
+<div style="height:900px;width: 1200px">
+    <main class="col-md-1"></main>
+
+    <main class="col-md-10  justify-content-center">
+        <form method="post" id="register" class="form-horizontal" style="padding-bottom: 0px" >
+            <div class="card" style="padding-bottom: 100px">
+                <div class="card-header">
+                    文章添加
+                </div>
+                <div class="card-block">
+                    <div class="form-group mt-4 ">
+                        <label class="col-sm-3 control-label">文章标题</label>
+                        <div class="col-sm-7">
+                            <input type="text"  name="title" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-block">
+                    <div class="form-group mt-4 ">
+                        <label class="col-sm-3 control-label">文章描述</label>
+                        <div class="col-sm-7">
+                            <input type="text"  name="destrin" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="card-block">
+                        <div class="form-group mt-4 ">
+                            <label class="col-sm-3 control-label">文章栏目</label>
+                            <div class="col-sm-7">
+                                <div class="input-group ">
+
+                                    <select class="custom-select" id="inputGroupSelect01" name="cate_id">
+                                        <option selected=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">选择...</font></font></option>
+                                        {foreach $categorys as $v}
+                                        <option value="{$v['id']}"><font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">{$v['name']}</font></font></option>
+                                        {/foreach}
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <input type="text"  hidden name="{$Think.session.uid}">
+                <div class="card-block">
+                    <div class="form-group mt-4 ">
+                        <label class="col-sm-3 control-label">文章图片</label>
+                        <div class="col-sm-7">
+                            <div class="input-group ">
+                                <div class="custom-file">
+                                    <input type="file" name="title_img" id="title_img" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        <div class="card-block">
+                            <div class="form-group mt-4  ">
+                                <label class="col-sm-3 control-label">文章内容</label>
+                                <div class="col-sm-7">
+
+                                    <div id="content">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                <input type="hidden" name="user_id" value="{$Think.session.uid}">
+                <div class="text-center ">
+                    <button type="button" class="btn btn-success" id="reg">发布文章</button>
+                    <button type="button" class="btn btn-danger " id="ret">重新输入</button>
+                </div>
+
+                    </div>
+
+        </form>
+
+    </main>
+    <main class="col-md-3"></main>
+</div>
+<div style="padding-bottom: 10px"></div>
+<script>
+
+
+    $(function () {
+
+
+    $('#reg').click(function () {
+
+        let data = new FormData($("#register")[0]);
+        $.ajax({
+            type: 'post',
+            url: "{:url('/article')}",
+            data:data,
+            contentType: false, //不设置内容类型
+            processData: false, //不处理数据
+            dataType: 'json',
+            success: function(data){
+                if (data.status ==1) {
+                    swal({
+                        text: data.message,
+                        icon: "success",
+                        button: false
+                    });
+                    function success() {
+                        window.location.href= "{:url('index/index')}"
+                    }
+                    setTimeout(success,2000)
+                }else{
+                    swal({
+                        text: data.message,
+                        icon: "warning",
+                        button: false,
+                    });
+                }
+
+            }
+        })
+    })
+    //表单清空
+    $('#ret').click(function () {
+        $('#register')[0].reset();
+    })
+
+
+
+
+
+
+
+    })
+    $(function() {
+
+        md_edit = editormd("content", { //注意1：这里的就是上面的DIV的id属性值
+                placeholder : '  欢迎使用'+'Mra Gao ' +" 编辑器",
+            width : "100%",
+            height : 400,
+            syncScrolling : "single",
+            emoji : true,
+            path : "{asset}/editor/lib/", //注意2：你的路径
+            saveHTMLToTextarea : true,
+            tocm : true, // Using [TOCM]
+            tex : true, // 开启科学公式TeX语言支持，默认关闭
+            flowChart : true, // 开启流程图支持，默认关闭
+            /* 上传图片配置 */
+            imageUpload : true,
+            imageFormats : [ "jpg", "jpeg", "gif", "png", "bmp", "webp" ],
+            imageUploadURL : "{:url('/uploadPicture')}", //注意你后端的上传图片服务地址
+        });
+    });
+
+</script>
+
+
+{/block}

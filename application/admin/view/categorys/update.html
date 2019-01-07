@@ -1,0 +1,63 @@
+{extend name='/father/father'/}
+{block name='right'}
+<div class="col-xs-12 col-sm-9 col-lg-10">
+    <div style="height:330px;width: 1200px">
+        <main class="col-md-3"></main>
+
+        <main class="col-md-6   justify-content-center">
+            <form method="post" id="register" action="/admin/categorys/updateSave" class="form-horizontal" style="padding-bottom: 50px">
+                <div class="card" style="padding-bottom: 20px">
+                    <div class="card-header">
+                        栏目编辑
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group mt-4 ">
+                            <label class="col-sm-3 control-label">用户标题</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="name" value="{$result['name']}"  class="form-control" >
+                                <input type="hidden" name="id" value="{$result['id']}"  class="form-control" >
+                                <input type="hidden" name="user_id" value="{$Think.session.uid}"  class="form-control" required="">
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="form-group mt-4 ">
+                                <label class="col-sm-3 control-label">排序</label>
+                                <div class="col-sm-7">
+                                    <input type="number" name="sort"  value="{$result['sort']}" class="form-control" required="">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-block">
+                            <div class="form-group mt-4 ">
+                                <label class="col-sm-3 control-label">状态</label>
+                                <div class="col-sm-7">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="status" id="inlineRadio1" value="1" checked> 显示
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="status" id="inlineRadio2" value="0"> 隐藏
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="text-center ">
+                            <button type="submit" class="btn btn-success" id="reg">栏目保存</button>
+
+                        </div>
+                    </div></div></form></main>
+        <main class="col-md-3"></main>
+
+    </div>
+
+
+
+</div>
+
+
+
+{/block}
+

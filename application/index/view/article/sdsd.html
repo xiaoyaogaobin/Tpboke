@@ -1,0 +1,39 @@
+$('#sc').click(function () {
+//获取文章id
+let user_id = $(this).attr('user_id')
+//获取文章id
+let article_id = $(this).attr('article_id')
+//获取session id
+let session_id = $(this).attr('session_id')
+let data = {
+'user_id' :user_id,
+'article_id':article_id,
+'session_id':session_id,
+}
+if (user_id && article_id){
+$.ajax({
+type: 'post',
+url: "{:url('collection')}",
+data: data,
+dataType: 'json',
+success: function(data){
+
+if (data.status ==1) {
+swal({
+text: data.message,
+icon: "success",
+button: false
+});
+}else{
+swal({
+text: data.message,
+icon: "warning",
+button: false
+});
+}
+
+}
+})
+}
+
+}
